@@ -2,7 +2,7 @@
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import pixabayApiPictures from './pixabayApi';
 import pixabayApiPictures from "./pixabayApi";
-import placementPictur from "./placementPictures";
+import { placementPictur } from "./placementPictures";
 
 const formSearch = document.querySelector('search-form');
 const resultsDiv = document.querySelector('.gallery');
