@@ -4,14 +4,18 @@ import { Notify } from 'notiflix';
 const API_KEY = '35796421-236293f5f82a44e4cff98c104';
 const URL_API = 'https://pixabay.com/api/';
 
+export let count = null;
+export let totalHitsValue = null;
+
 export default class pixabayApiPictures {
     constructor() {
         this.perPage = 40;
         this.page = 1;
         this.searchQuery = '';
+        this.hits = 0;
     }
 
-    async fetchApiPictures() {
+    async getImages() {
         const parametersApi = new URLParametersApi({
             key: API_KEY,
             q: this.searchQuery,
