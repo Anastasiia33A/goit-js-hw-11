@@ -1,7 +1,8 @@
-export function placementPictur(markup) {
-    return markup
-        .map(({ webformatURL, largeImageURL, tags, likes, views, comments, download }) => {
-            return `div class="photo-card">
+export const resultsDiv = document.querySelector('.gallery');
+
+export function placementPictures(images) {
+   return images.map(({webformatURL,largeImageURL,tags,likes,views,comments,download}) => {
+        return `<div class="photo-card">
         <a href="${largeImageURL}">
   <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
   <div class="info">
@@ -17,7 +18,7 @@ export function placementPictur(markup) {
     <p class="info-item">
       <b>Downloads</b>${download}
     </p>
-  </div></div>`
-        }).join('');
-    
+  </div></div>`;
+      })
+      .join('');
 }

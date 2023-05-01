@@ -4,8 +4,8 @@ import { Notify } from 'notiflix';
 const API_KEY = '35796421-236293f5f82a44e4cff98c104';
 const URL_API = 'https://pixabay.com/api/';
 
-export let count = null;
-export let totalHitsValue = null;
+// export let count = null;
+// export let totalHitsValue = null;
 
 export default class pixabayApiPictures {
     constructor() {
@@ -16,7 +16,7 @@ export default class pixabayApiPictures {
     }
 
     async getImages() {
-        const parametersApi = new URLParametersApi({
+        const parametersApi = new URLSearchParams({
             key: API_KEY,
             q: this.searchQuery,
             page: this.page,
@@ -28,20 +28,28 @@ export default class pixabayApiPictures {
 
         try {
             const response = await axios.get(url);
-            this.additionPage()
-            return response
+            this.incrementPage()
+            return response;
         } catch (error) {
             Notify.failure('Error');
         }
 
     }
     
-    additionPage() {
+    incrementPage() {
             this.page += 1;
     }
     
     resetPage() {
         this.page = 1;
     }
+    get searchQuery() {
+    return this.query;
     }
+
+    set searchQuery(newQuery) {
+    this.query = newQuery;
+    }
+}
+
 

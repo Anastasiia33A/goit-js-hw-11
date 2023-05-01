@@ -2,42 +2,47 @@
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { pixabayApiPictures } from './pixabayApi';
 import { pixabayApiPictures } from "./pixabayApi";
-import { placementPictur } from "./placementPictures";
+import { placementPictures } from "./placementPictures";
 
-const formSearch = document.querySelector('search-form');
+const formSearch = document.querySelector('.search-form');
 const resultsDiv = document.querySelector('.gallery');
-// const BtnMore = document.querySelector('.load-more');
+const BtnMore = document.querySelector('.load-more');
+const superviseDiv = document.querySelector('.supervise');
+
+const pictures = new pixabayApiPictures();
+
 formSearch.addEventListener('submit', onBtnMore);
   
-  const pixabayPicturesMore = new pixabayApiPictures();
-  function onBtnMore(e) {
-    e.preventDefault();
+   function onBtnMore(e) {
+     e.preventDefault();
     if (e.target.elements.searchQuery.value === '') {
       return;
     }
     resultsDiv.innerHTML = '';
-    pixabayPicturesMore.page = 1;
-    pixabayPicturesMore.searchQuery = e.target.elements.searchQuery.value.trim();
-    pixabayPicturesMore.hits = 0;
-    pixabayPicturesMore.getImages().then(placementPictur);
+    pictures.hits = 0;
+    pictures.page = 1;
+    pictures.searchQuery = e.target.elements.searchQuery.value.trim();
+    pictures.getImages().then(placementPictures);
   }
 
-  function pixabayApiPictures() {
-    pixabayPicturesMore.page += 1;
-    pixabayPicturesMore.getImages().then(placementPictur).cathc(error => console.log(error));
+  function pixabayApiPicturesMore() {
+    pictures.page += 1;
+    pictures.getImages().then(placementPictures).catch(error => console.log(error));
   }
 
+const onEntry = entries => {
+    entries.forEach(entry => {
+    if (entry.isIntersecting && count > totalHitsValue) {
+      return;
+    } else if (
+      entry.isIntersecting &&
+      pixabayPicturesMore.searchQuery !== '' &&
+      count !== totalHitsValue
+    ) {
+      pixabayApiPicturesMore();
+    }
+  });
+};
+ const supervise = new IntersectionObserver(onEntry, options);
 
-
-//   const searchTerm = document.querySelector('.img-search').value;
-//   const response = await fetch(`/search?query=${searchTerm}`);
-//   const data = await response.json();
-//   displayResults(data);
-// });
-// function displayResults(data) {
-//   resultsDiv.innerHTML = '';
-//   data.forEach((result) => {
-//     const resultDiv = document.createElement('div');
-//     resultDiv.textContent = result.title;
-//     resultsDiv.appendChild(resultDiv);
-//   });
+ supervise.observe(superviseDiv);
