@@ -2,7 +2,7 @@
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import pixabayApiPictures from './pixabayApi';
 import pixabayApiPictures from "./pixabayApi";
-import placementPictures from "./placementPictures";
+import placementPictur from "./placementPictures";
 
 const formSearch = document.querySelector('search-form');
 const resultsDiv = document.querySelector('.gallery');
@@ -19,12 +19,12 @@ formSearch.addEventListener('submit', onBtnMore);
     pixabayPicturesMore.page = 1;
     pixabayPicturesMore.searchQuery = e.target.elements.searchQuery.value.trim();
     pixabayPicturesMore.hits = 0;
-    pixabayPicturesMore.getImages().then(placementPictures);
+    pixabayPicturesMore.getImages().then(placementPictur);
   }
 
   function pixabayApiPictures() {
     pixabayPicturesMore.page += 1;
-    pixabayPicturesMore.getImages().then(placementPictures).cathc(error => console.log(error));
+    pixabayPicturesMore.getImages().then(placementPictur).cathc(error => console.log(error));
   }
 
 

@@ -1,4 +1,4 @@
-export function placementPictures(markup) {
+export function placementPictur(markup) {
     return markup
         .map(({ webformatURL, largeImageURL, tags, likes, views, comments, download }) => {
             return `div class="photo-card">
