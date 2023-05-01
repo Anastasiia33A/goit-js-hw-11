@@ -1,13 +1,13 @@
 
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import { pixabayApiPictures } from './pixabayApi';
-import { pixabayApiPictures } from "./pixabayApi";
+import pixabayApiPictures  from './pixabayApi';
+import pixabayApiPictures from "./pixabayApi";
 import { placementPictures } from "./placementPictures";
 
 const formSearch = document.querySelector('.search-form');
 const resultsDiv = document.querySelector('.gallery');
 const BtnMore = document.querySelector('.load-more');
-const superviseDiv = document.querySelector('.supervise');
+const superviseDiv = document.querySelector('.io');
 
 const pictures = new pixabayApiPictures();
 
@@ -30,6 +30,7 @@ formSearch.addEventListener('submit', onBtnMore);
     pictures.getImages().then(placementPictures).catch(error => console.log(error));
   }
 
+
 const onEntry = entries => {
     entries.forEach(entry => {
     if (entry.isIntersecting && count > totalHitsValue) {
@@ -43,6 +44,9 @@ const onEntry = entries => {
     }
   });
 };
- const supervise = new IntersectionObserver(onEntry, options);
+const options = {
+ root: null,
+};
+ const io = new IntersectionObserver(onEntry, options);
 
- supervise.observe(superviseDiv);
+ io.observe(superviseDiv);
