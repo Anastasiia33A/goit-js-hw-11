@@ -36,7 +36,7 @@ const onEntry = entries => {
       return;
     } else if (
       entry.isIntersecting &&
-      pixabayPicturesMore.searchQuery !== '' &&
+      pictures.searchQuery !== '' &&
       count !== totalHitsValue
     ) {
       pixabayApiPicturesMore();

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Notify } from 'notiflix';
 
 const API_KEY = '35796421-236293f5f82a44e4cff98c104';
-const URL_API = 'https://pixabay.com/api/';
+const URL_API = `https://pixabay.com/api/`;
 
 // export let count = null;
 // export let totalHitsValue = null;
