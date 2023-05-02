@@ -1,52 +1,105 @@
-
+import ImagePixabayApi from "./pixabayApi";
+import { placementPictures, resultsDiv } from "./placementPictures";
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import pixabayApiPictures  from './pixabayApi';
-import pixabayApiPictures from "./pixabayApi";
-import { placementPictures } from "./placementPictures";
 
-const formSearch = document.querySelector('.search-form');
-const resultsDiv = document.querySelector('.gallery');
-const BtnMore = document.querySelector('.load-more');
-const superviseDiv = document.querySelector('.io');
+const form = document.querySelector(".search-form");
+const BtnMore = document.querySelector(".load-more");
 
-const pictures = new pixabayApiPictures();
+form.addEventListener("submit", submitForm);
+BtnMore.addEventListener("click", onLoadMore);
 
-formSearch.addEventListener('submit', onBtnMore);
-  
-   function onBtnMore(e) {
-     e.preventDefault();
-    if (e.target.elements.searchQuery.value === '') {
-      return;
+const imagePixabayApi = new ImagePixabayApi();
+
+let lightbox = new SimpleLightbox(".gallery a", {
+    captionType: 'attr',
+    captionsData: 'alt',
+    captionDelay: '100',
+    navText: ['⇦', '⇨']
+});
+
+let totalImages = 0;
+
+async function submitForm(e) {
+    e.preventDefault();
+
+    clearGallery();
+    const searchQuery = imagePixabayApi.query = e.currentTarget.elements.searchQuery.value.trim()
+    if (!searchQuery) {
+        withoutAsking();
+        return;
     }
-    resultsDiv.innerHTML = '';
-    pictures.hits = 0;
-    pictures.page = 1;
-    pictures.searchQuery = e.target.elements.searchQuery.value.trim();
-    pictures.getImages().then(placementPictures);
-  }
 
-  function pixabayApiPicturesMore() {
-    pictures.page += 1;
-    pictures.getImages().then(placementPictures).catch(error => console.log(error));
-  }
+   imagePixabayApi.resetPage()
+    try {
+        const response = await imagePixabayApi.fetchImages(searchQuery);
+        const totalHits = response.totalHits;
+        totalImages += imagePixabayApi.per_page;
 
+        if (response.hits.length === 0) {
+            errorMessage();
+            form.reset();
+            return;
+        }
 
-const onEntry = entries => {
-    entries.forEach(entry => {
-    if (entry.isIntersecting && count > totalHitsValue) {
-      return;
-    } else if (
-      entry.isIntersecting &&
-      pictures.searchQuery !== '' &&
-      count !== totalHitsValue
-    ) {
-      pixabayApiPicturesMore();
+        placementPictures(response.hits);
+
+        Notify.info(`Hooray! We found ${totalHits} images.`);
+        
+        lightbox.refresh();
+
+        BtnMore.classList.remove("is-hidden");
+
+        if (response.hits.length < imagePixabayApi.per_page) {
+            BtnMore.classList.add("is-hidden")
+        }
+
+        form.reset()
+    } catch (error) {
+        errorMessage
     }
-  });
-};
-const options = {
- root: null,
-};
- const io = new IntersectionObserver(onEntry, options);
+}
 
- io.observe(superviseDiv);
+async function onLoadMore(searchQuery) {
+    try {
+        const response = await imagePixabayApi.fetchImages(searchQuery);
+        totalImages += imagePixabayApi.per_page;
+
+        if (totalImages >= response.totalHits) {
+            placementPictures(response.hits)
+            BtnMore.classList.add("is-hidden");
+            scrollIsBtn();
+            lightbox.refresh();
+
+            Notify.failure("We're sorry, but you've reached the end of search results!");
+            return;
+        }
+
+        placementPictures(response.hits);
+        scrollIBtn();
+        lightbox.refresh();
+    }   catch (error) {
+            errorMessage;
+    }
+}
+
+    function scrollIsBtn() {
+        const { height: cardHeight } = document
+            .querySelector(".gallery")
+            .firstElementChild.getBoundingClientRect();
+       
+    }
+
+function clearGallery() {
+    resultsDiv.innerHTML = "";
+    BtnMore.classList.add("is-hidden");
+}
+
+function withoutAsking() {
+    Notify.warning("Please enter a request!");
+}
+
+function errorMessage() {
+    Notify.failure("Sorry, there are no images matching your search query. Please try again!");
+}

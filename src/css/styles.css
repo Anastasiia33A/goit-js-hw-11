@@ -1,3 +1,7 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 .button-search {
     
     font-weight: 800;
@@ -6,6 +10,7 @@
     border-radius: 50%;
     cursor: grab;
     border: 2px dashed #89cac0;
+    padding: 10px;
 }
 .button-search:hover,
 .button-search:focus {
@@ -13,23 +18,40 @@
     
 }
 .search-form {
-    margin-left: 35%;
-    margin-right: 35%;
-    transform: translateY(100%);
+    margin-left: 50px;
+    margin-right: 50px;
 }
 .img-search {
     font-size: 18px;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 .gallery {
     list-style: none;
+    display: flexbox;
 }
 .load-more{
     background-color: yellow;
     font-weight: 800;
-    font-size: 18px;
+    font-size: 20px;
+    padding: 20px;
 }
 img {
-    display: block;
-    width: 100%;
-    height: 150px;
+    max-width: 100%;
+    height: auto;
+    justify-content: center;
+    margin: 0 auto;
+    
+}
+.photo-card {
+   display: inline-flex;
+   gap: 20px;
+}
+.info {
+    font-size: 20px;
+    font-weight: 500;
+    font-style: oblique;
+}
+.io {
+    margin-left: 200px;
 }
