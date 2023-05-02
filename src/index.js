@@ -1,8 +1,8 @@
-import ImagePixabayApi from "./pixabayApi";
-import { placementPictures, resultsDiv } from "./placementPictures";
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import ImagePixabayApi from "./js/pixabayApi";
+import { placementPictures, resultsDiv } from "./js/placementPictures";
 
 const form = document.querySelector(".search-form");
 const BtnMore = document.querySelector(".load-more");
@@ -88,7 +88,11 @@ async function onLoadMore(searchQuery) {
         const { height: cardHeight } = document
             .querySelector(".gallery")
             .firstElementChild.getBoundingClientRect();
-       
+     
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+      });
     }
 
 function clearGallery() {

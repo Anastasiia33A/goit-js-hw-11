@@ -55,3 +55,6 @@ img {
 .io {
     margin-left: 200px;
 }
+.is-hidden {
+    display: none;
+}
